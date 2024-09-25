@@ -52,6 +52,16 @@ services:
       - "8001:8001"
       - "8444:8444"
 
+  konga:
+    image: pantsel/konga
+    ports:
+      - 1337:1337
+    links:
+      - kong:kong
+    container_name: konga
+    environment:
+      - NODE_ENV=production
+
 networks:
   default:
     name: kong-net
