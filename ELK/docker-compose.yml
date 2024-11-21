@@ -13,7 +13,7 @@ services:
       - http.host=0.0.0.0
       - transport.host=0.0.0.0
       - xpack.security.enabled=false
-      - xpack.monitoring.enabled=false
+      - xpack.monitoring.templates.enabled=false
       - cluster.name=elasticsearch
       - bootstrap.memory_lock=true
     networks:
