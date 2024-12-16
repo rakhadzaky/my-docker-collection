@@ -1,0 +1,19 @@
+version: '3.7'
+services:
+  ftp:
+    image: bogem/ftp:latest
+    container_name: sftp
+    restart: on-failure
+    ports:
+      - 20:20 
+      - 21:21 
+      - 47400-47470:47400-47470
+    volumes:
+      - type: bind
+        source: ./virtual-volume
+        target: /home/vsftpd
+    environment:
+      - FTP_USER=user
+      - FTP_PASS=pass
+      - PASV_ADDRESS=127.0.0.1
+
