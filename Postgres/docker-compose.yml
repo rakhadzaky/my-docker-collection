@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   postgres:
-    container_name: bri-relawan-pg
+    container_name: docker-postgres
     image: postgres
     hostname: localhost
     ports:
@@ -17,7 +17,7 @@ services:
       - local-network-service
 
   pgadmin:
-    container_name: bri-relawan-pgadmin
+    container_name: docker-postgres-admin
     image: dpage/pgadmin4
     depends_on:
       - postgres

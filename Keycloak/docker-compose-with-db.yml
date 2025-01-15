@@ -1,0 +1,50 @@
+version: '3.8'
+
+networks:
+  keycloak-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.1.1.0/24
+
+services:
+  mysql:
+    image: mysql:latest
+    container_name: mysql
+    networks:
+      - keycloak-net
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_DATABASE=keycloak
+      - MYSQL_USER=keycloak
+      - MYSQL_PASSWORD=password
+      - MYSQL_ROOT_PASSWORD=root_password
+    healthcheck:
+      test: "mysqladmin ping -u root -p$${MYSQL_ROOT_PASSWORD}"
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:24.0
+    container_name: keycloak
+    networks:
+      - keycloak-net
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+      - KC_DB=mysql
+      - KC_DB_URL_HOST=mysql
+      - KC_DB_URL_DATABASE=keycloak
+      - KC_DB_USERNAME=keycloak
+      - KC_DB_PASSWORD=password
+      - KC_HEALTH_ENABLED=true
+      - KEYCLOAK_LOGLEVEL=DEBUG
+    ports:
+      - "80:8080"
+      # - "443:8443"
+    volumes:
+      - ./certs:/etc/x509/https
+    command: start-dev
+    depends_on:
+      - mysql
+    healthcheck:
+      test: "curl -f http://localhost/health/ready || exit 1"
