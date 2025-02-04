@@ -21,6 +21,9 @@ services:
       - "7443:7443"
     networks:
       - local_network
+      - keycloak-net
 networks:
   local_network:
+    driver: bridge
+  keycloak-net:
     driver: bridge
