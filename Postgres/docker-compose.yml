@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   postgres:
-    container_name: docker-postgres
+    container_name: docker-postgres-paperless
     image: postgres
     hostname: localhost
     ports:
@@ -15,9 +15,10 @@ services:
     restart: unless-stopped
     networks:
       - local-network-service
+      - shared-network
 
   pgadmin:
-    container_name: docker-postgres-admin
+    container_name: docker-postgres-admin-paperless
     image: dpage/pgadmin4
     depends_on:
       - postgres
@@ -29,6 +30,7 @@ services:
     restart: unless-stopped
     networks:
       - local-network-service
+      - shared-network
 
 volumes:
   postgres-data:
@@ -38,3 +40,5 @@ networks:
   local-network-service:
     external: false
     name: local-network-service
+  shared-network:
+    external: true
