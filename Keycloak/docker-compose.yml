@@ -14,20 +14,19 @@ services:
       KC_HEALTH_ENABLED: "true"
       KC_LOG_LEVEL: info
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:7080/health/ready"]
+      test: [ "CMD", "curl", "-f", "http://localhost:7080/health/ready" ]
       interval: 15s
       timeout: 2s
       retries: 15
-    command: ["start-dev", "--http-port", "7080", "--https-port", "7443"]
+    command: [ "start-dev", "--http-port", "7080", "--https-port", "7443" ]
     ports:
       - "7080:7080"
       - "7443:7443"
     networks:
       - local_network
-      - shared-network
-
+      - keycloak-net
 networks:
   local_network:
     driver: bridge
-  shared-network:
-    external: true
+  keycloak-net:
+    driver: bridge
